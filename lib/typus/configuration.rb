@@ -3,8 +3,8 @@ module Typus
 
     # Read configuration from <tt>config/typus/**/*.yml</tt>.
     def self.config!
-      application = Dir[File.join(Typus.config_folder, "**", "*.yml").to_s]
-      plugins = Dir[File.join("vendor", "plugins", "*", "config", "typus", "*.yml").to_s]
+      application = Dir[File.join(Rails.root, Typus.config_folder, "**", "*.yml").to_s]
+      plugins = Dir[File.join(Rails.root, "vendor", "plugins", "*", "config", "typus", "*.yml").to_s]
       files = (application + plugins).reject { |f| f.include?("_roles.yml") }
 
       @@config = {}
@@ -22,8 +22,8 @@ module Typus
 
     # Read roles from files <tt>config/typus/**/*_roles.yml</tt>.
     def self.roles!
-      application = Dir[File.join(Typus.config_folder, "**", "*_roles.yml").to_s]
-      plugins = Dir[File.join("vendor", "plugins", "*", "config", "typus", "*_roles.yml").to_s]
+      application = Dir[File.join(Rails.root, Typus.config_folder, "**", "*_roles.yml").to_s]
+      plugins = Dir[File.join(Rails.root, "vendor", "plugins", "*", "config", "typus", "*_roles.yml").to_s]
       files = (application + plugins).sort
 
       @@roles = {}
