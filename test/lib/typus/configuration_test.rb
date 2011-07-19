@@ -2,6 +2,8 @@ require "test_helper"
 
 class ConfigurationTest < ActiveSupport::TestCase
 
+  TYPUS_ROOT = Pathname.new(File.expand_path('../../../../', __FILE__))
+
   should "verify typus roles is loaded" do
     assert Typus::Configuration.respond_to?(:roles!)
     assert Typus::Configuration.roles!.is_a?(Hash)
@@ -13,31 +15,31 @@ class ConfigurationTest < ActiveSupport::TestCase
   end
 
   should "load configuration files from config broken" do
-    Typus.expects(:config_folder).at_least_once.returns("test/fixtures/config/broken")
+    Typus.expects(:config_folder).at_least_once.returns(TYPUS_ROOT.join("test/fixtures/config/broken"))
     assert_not_equal Hash.new, Typus::Configuration.roles!
     assert_not_equal Hash.new, Typus::Configuration.config!
   end
 
   should "load configuration files from config empty" do
-    Typus.expects(:config_folder).at_least_once.returns("test/fixtures/config/empty")
+    Typus.expects(:config_folder).at_least_once.returns(TYPUS_ROOT.join("test/fixtures/config/empty"))
     assert_equal Hash.new, Typus::Configuration.roles!
     assert_equal Hash.new, Typus::Configuration.config!
   end
 
   should "load configuration files from config ordered" do
-    Typus.expects(:config_folder).at_least_once.returns("test/fixtures/config/ordered")
+    Typus.expects(:config_folder).at_least_once.returns(TYPUS_ROOT.join("test/fixtures/config/ordered"))
     expected = { "admin" => { "categories" => "read" } }
     assert_equal expected, Typus::Configuration.roles!
   end
 
   should "load configuration files from config unordered" do
-    Typus.expects(:config_folder).at_least_once.returns("test/fixtures/config/unordered")
+    Typus.expects(:config_folder).at_least_once.returns(TYPUS_ROOT.join("test/fixtures/config/unordered"))
     expected = { "admin" => { "categories" => "read, update" } }
     assert_equal expected, Typus::Configuration.roles!
   end
 
   should "load configuration files from config default" do
-    Typus.expects(:config_folder).at_least_once.returns("test/fixtures/config/default")
+    Typus.expects(:config_folder).at_least_once.returns(TYPUS_ROOT.join("test/fixtures/config/default"))
     assert_not_equal Hash.new, Typus::Configuration.roles!
     assert_not_equal Hash.new, Typus::Configuration.config!
     assert Typus.resources.empty?
